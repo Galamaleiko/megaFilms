@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/bucket-list-mevn-master.iml" filepath="$PROJECT_DIR$/.idea/bucket-list-mevn-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/megaFilms.iml" filepath="$PROJECT_DIR$/.idea/megaFilms.iml" />
     </modules>
   </component>
 </project>

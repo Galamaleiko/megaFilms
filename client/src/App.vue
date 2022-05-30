@@ -13,6 +13,8 @@
         <hr class="popup-hr">
         <p class="filmDesc__popup" v-text="description"></p>
         <p class="filmDate__popup" v-text="filmDate"></p>
+        <hr class="popup-hr">
+        <p class="filmDate__popup" v-text="cinemas"></p>
       </div>
     </film-popup>
 
@@ -20,10 +22,19 @@
       <div class="control is-expanded">
         <input class="input" v-model="filmName" type="text" placeholder="Ryan Gosling...."/>
       </div>
+
       <div class="control">
         <a class="button is-info" @click="findItem(filmName)" :disabled="!filmName">Find</a>
       </div>
     </div>
+
+    <div class="btn-group" style="width:100%">
+      <button @click="crimeGenre" style="width:25%">Crime</button>
+      <button @click="comedyGenre" style="width:25%">Comedy</button>
+      <button @click="familyGenre" style="width:25%">Family</button>
+      <button @click="actionGenre" style="width:25%">Action</button>
+    </div>
+
     <div class="notification" v-for="(item) in items" :key="item._id">
       <div class="columns">
         <img :src=item.imgUrl class="filmImg" height="100%" width="40%" alt="filmName">
@@ -59,6 +70,8 @@ export default {
       imgUrl: "",
       isInfoPopup: false,
       filmDate: "",
+      genre: "",
+      cinemas: ""
     };
   },
   async mounted() {
@@ -79,11 +92,57 @@ export default {
       }
     },
 
+    async actionGenre() {
+      const response = await axios.post("api/bucketListItems/action");
+      if (response.data != {}) {
+        this.items = [];
+        response.data.forEach(film => {
+          this.items.push(film);
+        })
+      } else {
+        this.items.push("Film Not Found!")
+      }
+
+    },
+    async comedyGenre() {
+      const response = await axios.post("api/bucketListItems/comedy");
+      if (response.data != {}) {
+        this.items = [];
+        response.data.forEach(film => {
+          this.items.push(film);
+        })
+      } else {
+        this.items.push("Film Not Found!")
+      }
+    },
+    async crimeGenre() {
+      const response = await axios.post("api/bucketListItems/crime");
+      if (response.data != {}) {
+        this.items = [];
+        response.data.forEach(film => {
+          this.items.push(film);
+        })
+      } else {
+        this.items.push("Film Not Found!")
+      }
+    },
+    async familyGenre() {
+      const response = await axios.post("api/bucketListItems/family");
+      if (response.data !== {}) {
+        this.items = [];
+        response.data.forEach(film => {
+          this.items.push(film);
+        })
+      } else {
+        this.items.push("Film Not Found!")
+      }
+    },
+
     showInfo(item) {
       this.filmName = item.name;
       this.description = item.description;
       this.imgUrl = item.imgUrl;
-      this.filmDate = item.filmDate;
+      this.filmDate = item.filmDate + ", " + item.genre;
       this.cinemas = "Available in " + item.cinemas;
       this.isInfoPopup = true;
     },
@@ -101,7 +160,7 @@ export default {
   margin: auto;
   margin-top: 3rem;
   max-width: 700px;
-  background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(57,57,113,1) 78%, rgba(101,157,189,1) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(57, 57, 113, 1) 78%, rgba(101, 157, 189, 1) 100%);
 }
 
 .h1 {
@@ -129,6 +188,7 @@ body {
   width: 100%;
   z-index: 10;
   size: 5px;
+  background-color: #20678c;
 }
 
 .icon {
@@ -200,6 +260,31 @@ body {
     width: 100%;
     height: 100%;
   }
+
+  .btn-group button {
+    background-color: #04AA6D; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    height: 300px;
+  }
+
+  .btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .btn-group button:not(:last-child) {
+    border-right: none;
+  }
+
+  .btn-group button:hover {
+    background-color: #3e8e41;
+  }
+
 }
 
 </style>

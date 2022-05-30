@@ -8,8 +8,8 @@ router.get('/', async (req, res) => {
         const bucketListItems = await BucketListItem.find()
         if (!bucketListItems) throw new Error('No bucketListItems')
         const sorted = bucketListItems.sort((b, a) => {
-            aDate = a.filmDate.substring(0, 4)
-            bDate = b.filmDate.substring(0, 4)
+            let aDate = a.filmDate.substring(0, 4)
+            let bDate = b.filmDate.substring(0, 4)
             return aDate - bDate
         })
         res.status(201).json(sorted)
@@ -20,14 +20,21 @@ router.get('/', async (req, res) => {
 
 router.post('/:name', async (req, res) => {
     const {name} = req.params
-
     try {
-        let find = await BucketListItem.find({name: {$regex: new RegExp('.*' + name + '.*', 'i')}});
-        res.status(200).json(find)
+
+        if (name.match("action|comedy|crime|family")) {
+            let find = await BucketListItem.find({genre: {$regex: new RegExp('.*' + name + '.*', 'i')}});
+            res.status(200).json(find)
+        } else {
+            let find = await BucketListItem.find({name: {$regex: new RegExp('.*' + name + '.*', 'i')}});
+            res.status(200).json(find)
+        }
+
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 })
+
 router.post('/', async (req, res) => {
     const newBucketListItem = new BucketListItem(req.body)
 

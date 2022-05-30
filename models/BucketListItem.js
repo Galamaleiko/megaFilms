@@ -20,6 +20,14 @@ const BucketListItemSchema = new Schema({
     filmDate: {
         type: String,
         required: true,
+    },
+    genre: {
+        type: String,
+        required: true,
+    },
+    cinemas: {
+        type: String,
+        required: true,
     }
 })
 
