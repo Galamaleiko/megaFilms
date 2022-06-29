@@ -6,8 +6,12 @@
     <film-popup
         v-if="isInfoPopup"
         @closePopup="closePopupInfo"
+        @bookFilm="bookFilm"
     >
-      <img :src=imgUrl class="filmImg__popup" height="100%" width="40%" alt="filmName">
+      <video class="filmImg__popup" height="100%" width="40%" controls :poster=imgUrl>
+        <source :src=trailerUrl type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
       <div class="filmText">
         <p class="filmName" v-text="filmName"></p>
         <hr class="popup-hr">
@@ -71,7 +75,9 @@ export default {
       isInfoPopup: false,
       filmDate: "",
       genre: "",
-      cinemas: ""
+      cinemas: "",
+      trailerUrl: "",
+      bookingUrl: ""
     };
   },
   async mounted() {
@@ -145,6 +151,8 @@ export default {
       this.filmDate = item.filmDate + ", " + item.genre;
       this.cinemas = "Available in " + item.cinemas;
       this.isInfoPopup = true;
+      this.trailerUrl = item.trailerUrl;
+      this.bookingUrl = item.bookingUrl;
     },
 
     closePopupInfo() {
